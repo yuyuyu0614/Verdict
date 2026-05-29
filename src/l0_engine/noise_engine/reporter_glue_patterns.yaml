@@ -1,0 +1,13 @@
+﻿patterns:
+  - name: meeting_glue
+    regex: '''^(此次)?会议(指出|强调|认为|表示|还指出|特别强调)'''
+    description: 会议引导语碎片
+  - name: person_verb_glue
+    regex: '''^.{2,6}(表示|认为|强调|指出|称|透露|介绍)'''
+    description: 人名+表示类引导语
+  - name: source_glue
+    regex: '''^(据了解|据悉|据报道|据介绍)'''
+    description: 来源类引导语
+  - name: notice_glue
+    regex: '''^(通知称|公告称|声明称)'''
+    description: 通知/公告类引导语
