@@ -1,0 +1,122 @@
+patterns:
+- action: discard
+  exemption:
+  - 警惕
+  - 提醒
+  - 谎称
+  - 冒充
+  - 所谓
+  - 骗局
+  - 反诈
+  keywords:
+  - 涨停推荐
+  - 牛股
+  - 内幕消息
+  - 跟庄
+  - 老师带单
+  - 稳赚
+- action: discard
+  exemption:
+  - 警惕
+  - 提醒
+  keywords:
+  - 加群
+  - 扫码领取
+  - 点击领取
+  - 免费领取
+- action: discard
+  exemption: []
+  keywords:
+  - 内部票
+  - VIP通道
+  - 独家渠道
+- action: discard
+  exemption:
+  - 处罚
+  - 违规
+  - 监管
+  - 调查
+  - 停牌
+  - 风险
+  keywords:
+  - 荐股
+  - 短线牛股
+  - 炒股群
+  - 投资群
+- action: discard
+  exemption: []
+  keywords:
+  - 到手
+  - 好价
+  - 神价
+  - 白菜价
+  - 必抢
+  - 囤货
+- action: discard
+  exemption:
+  - 警惕
+  keywords:
+  - 加微信
+  - 添加微信
+  - 微信领取
+- action: discard
+  exemption: []
+  keywords:
+  - 点击购买
+  - 立即下单
+  - 马上下单
+  - 去购买
+- action: discard
+  exemption:
+  - 警惕
+  keywords:
+  - 必抢
+  - 发车
+  - 囤货
+  - 上车
+- action: discard
+  exemption:
+  - 警惕
+  keywords:
+  - 速领
+  - 快领
+  - 戳这里
+- action: discard
+  exemption: []
+  keywords:
+  - 震惊
+  - 速看
+  - 不看后悔
+  - 马上删
+- action: discard
+  exemption: []
+  keywords:
+  - 神价
+  - 好价
+  - 白菜价
+  - 史低价
+  - 冰点价
+- action: discard
+  exemption:
+  - 警惕
+  - 反诈
+  keywords:
+  - 抽奖
+  - 红包雨
+  - 大转盘
+  - 砸金蛋
+  - 免费送
+- action: discard
+  exemption: []
+  keywords:
+  - VIP群
+  - 涨停股
+  - 推送涨停
+  - 老师带单
+  - 炒股群推荐
+- action: discard
+  exemption: []
+  keywords:
+  - 每日推送
+  - 每日精选
+  - 盘前推荐
