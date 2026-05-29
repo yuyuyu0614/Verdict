@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verdict - Chinese News Noise Filter</title>
+<style>
+:root {
+  --bg: #F0F4F7;
+  --surface: #FFFFFF;
+  --surface2: #F5F8FA;
+  --border: #DEE7EE;
+  --text: #3D4A56;
+  --text2: #8899A8;
+  --accent: #8BA4BC;
+  --accent-bg: rgba(139,164,188,0.15);
+  --green: #7CB896;
+  --green-bg: rgba(124,184,150,0.15);
+  --red: #D4848A;
+  --red-bg: rgba(212,132,138,0.12);
+  --amber: #C9A87C;
+  --amber-bg: rgba(201,168,124,0.15);
+  --shadow: 0 2px 14px rgba(130,150,170,0.08);
+  --radius: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px 60px;
+}
+.container { max-width: 780px; width: 100%; }
+.header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #5C7892;
+  letter-spacing: 0.5px;
+}
+.header p {
+  color: var(--text2);
+  margin-top: 8px;
+  font-size: 15px;
+}
+.badges {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.badge {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  color: var(--text2);
+}
+.sample-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.sample-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sample-header h3 {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 600;
+}
+.sample-stats {
+  display: flex;
+  gap: 14px;
+  font-size: 13px;
+}
+.stat { display: flex; align-items: center; gap: 5px; }
+.stat-clean { color: var(--green); }
+.stat-noise { color: var(--red); }
+.sample-input {
+  padding: 14px 22px;
+  font-size: 14px;
+  color: var(--text2);
+  border-bottom: 1px solid var(--border);
+  font-style: italic;
+  background: var(--surface2);
+}
+.claim-list {
+  padding: 12px 22px 18px;
+}
+.claim-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  gap: 10px;
+}
+.claim-row.clean { background: var(--green-bg); }
+.claim-row.noise { background: var(--red-bg); }
+.claim-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.claim-icon.pass { background: var(--green); color: #fff; }
+.claim-icon.fail { background: var(--red); color: #fff; }
+.claim-label {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.label-pass { background: var(--green-bg); color: var(--green); }
+.label-discard { background: var(--red-bg); color: var(--red); }
+.label-ad { background: var(--amber-bg); color: var(--amber); }
+.footer {
+  text-align: center;
+  margin-top: 40px;
+  color: var(--text2);
+  font-size: 13px;
+}
+.footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+  <h1>Verdict</h1>
+  <p>Zero-LLM, deterministic Chinese news noise filter</p>
+  <div class="badges">
+    <span class="badge">Noise Rate 0.1%</span>
+    <span class="badge">Zero LLM</span>
+    <span class="badge">CPU Only &lt;300MB</span>
+    <span class="badge">MIT License</span>
+  </div>
+</div>
+
+<div id="samples"></div>
+
+<div class="footer">
+  <a href="https://github.com/yuyuyu0614/Verdict">GitHub</a>
+</div>
+</div>
+
+<script>
+const DEMO_DATA = [{"input": "恒大地产集团有限公司负债2.4万亿元，注册资本为150亿元人民币。会议指出，要坚持以经济建设为中心，全面深化改革。", "total": 5, "clean": 4, "noise": 1, "claims": [{"text": "恒大地产集团有限公司负债2.4万亿元", "clean": true, "type": ""}, {"text": "注册资本为150亿元人民币", "clean": true, "type": ""}, {"text": "会议指出", "clean": false, "type": ""}, {"text": "要坚持以经济建设为中心", "clean": true, "type": ""}, {"text": "全面深化改革", "clean": true, "type": ""}]}, {"input": "5月28日，工信部发布公告称，我国5G基站数量突破500万个，覆盖率达98%。华为公司表示将继续加大研发投入。据了解，该项目建设周期为3年。", "total": 6, "clean": 5, "noise": 1, "claims": [{"text": "5月28日", "clean": true, "type": ""}, {"text": "工信部发布公告称", "clean": true, "type": ""}, {"text": "我国5G基站数量突破500万个", "clean": true, "type": ""}, {"text": "覆盖率达98%", "clean": true, "type": ""}, {"text": "华为公司表示将继续加大研发投入。", "clean": false, "type": ""}, {"text": "该项目建设周期为3年", "clean": true, "type": ""}]}, {"input": "扫码加群领取牛股，涨停推荐，内幕消息。A股三大指数今日集体收涨，沪指上涨1.2%。此次会议特别强调要加强金融监管。", "total": 6, "clean": 2, "noise": 4, "claims": [{"text": "扫码加群领取牛股", "clean": false, "type": ""}, {"text": "涨停推荐", "clean": false, "type": ""}, {"text": "内幕消息", "clean": false, "type": ""}, {"text": "A股三大指数今日集体收涨", "clean": true, "type": ""}, {"text": "沪指上涨1.2%", "clean": true, "type": ""}, {"text": "此次会议特别强调要加强金融监管。", "clean": false, "type": ""}]}];
+
+(function render() {
+  const container = document.getElementById('samples');
+  DEMO_DATA.forEach(function(sample, idx) {
+    var card = document.createElement('div');
+    card.className = 'sample-card';
+
+    var header = document.createElement('div');
+    header.className = 'sample-header';
+    header.innerHTML = '<h3>Sample ' + (idx + 1) + '</h3>' +
+      '<div class="sample-stats">' +
+        '<span class="stat stat-clean">PASS ' + sample.clean + '</span>' +
+        '<span class="stat stat-noise">NOISE ' + sample.noise + '</span>' +
+      '</div>';
+    card.appendChild(header);
+
+    var input = document.createElement('div');
+    input.className = 'sample-input';
+    input.textContent = sample.input;
+    card.appendChild(input);
+
+    var list = document.createElement('div');
+    list.className = 'claim-list';
+    sample.claims.forEach(function(c) {
+      var row = document.createElement('div');
+      row.className = 'claim-row ' + (c.clean ? 'clean' : 'noise');
+      var icon = document.createElement('span');
+      icon.className = 'claim-icon ' + (c.clean ? 'pass' : 'fail');
+      icon.textContent = c.clean ? 'OK' : 'X';
+      row.appendChild(icon);
+      var text = document.createElement('span');
+      text.style.flex = '1';
+      text.textContent = c.text;
+      row.appendChild(text);
+      var label = document.createElement('span');
+      label.className = 'claim-label ' + (c.clean ? 'label-pass' : 'label-discard');
+      label.textContent = c.clean ? 'PASS' : 'DISCARD';
+      row.appendChild(label);
+      list.appendChild(row);
+    });
+    card.appendChild(list);
+    container.appendChild(card);
+  });
+})();
+</script>
+</body>
+</html>
