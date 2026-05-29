@@ -1,4 +1,6 @@
-﻿# Verdict
+# Verdict
+
+[🚀 在线试用](https://huggingface.co/spaces/yuyuyu0614/verdict)
 
 国内首个零 LLM、确定性输出的中文信息去噪引擎。噪声率 0.1%，纯 CPU <300MB，无需 GPU，无需 API Key。
 
