@@ -1,0 +1,33 @@
+﻿# Source whitelist for L5 source scoring
+# High-credibility sources get score boost
+sources:
+  - name: 新华社
+    score: 1.0
+    category: 官方通讯社
+  - name: 人民日报
+    score: 1.0
+    category: 官方媒体
+  - name: 央视新闻
+    score: 1.0
+    category: 官方媒体
+  - name: 财新
+    score: 0.9
+    category: 财经媒体
+  - name: 第一财经
+    score: 0.85
+    category: 财经媒体
+  - name: 21世纪经济报道
+    score: 0.85
+    category: 财经媒体
+  - name: 证监会
+    score: 1.0
+    category: 监管机构
+  - name: 央行
+    score: 1.0
+    category: 监管机构
+  - name: 银保监会
+    score: 1.0
+    category: 监管机构
+  - name: 国家统计局
+    score: 1.0
+    category: 统计机构
