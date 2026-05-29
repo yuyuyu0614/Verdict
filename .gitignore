@@ -1,4 +1,4 @@
-﻿__pycache__/
+__pycache__/
 *.pyc
 *.pyo
 *.egg-info/
@@ -11,3 +11,11 @@ build/
 .DS_Store
 venv/
 .venv/
+
+# Sensitive / non-public data
+noise_log.db
+noise_labels.jsonl
+*.pkl
+*.db
+*.jsonl
+models/
